@@ -10,13 +10,13 @@ require_once(__DIR__ . '/smtp-configuration.php'); ?>
                 <tr>
                     <th scope="row">Host Name</th>
                     <td>
-                        <input type="text" name="smtp_host" aria-describedby="smtp_host_description" class="regular-text code" value="<?php echo esc_attr(get_option('smtp-configuration-smtp-host')); ?>" placeholder="smtp.gmail.com" />
+                        <input type="text" name="smtp_host" aria-describedby="smtp_host_description" class="regular-text code" value="<?php echo esc_attr(get_option('smtp-configuration-smtp-host', DEFAUT_SMTP_HOST)); ?>" placeholder="smtp.gmail.com" />
                         <p class="description" id="smtp_host_description">Host Name (<i>eg. smtp.gmail.com</i>)</p>
                     </td>
                 </tr>
                 <tr>
                     <th scope="row">Port</th>
-                    <td><input type="text" name="smtp_port" value="<?php echo esc_attr(get_option('smtp-configuration-smtp-port')); ?>" placeholder="25" /></td>
+                    <td><input type="text" name="smtp_port" value="<?php echo esc_attr(get_option('smtp-configuration-smtp-port', DEFAUT_SMTP_PORT)); ?>" placeholder="25" /></td>
                 </tr>
                 <tr>
                     <th scope="row">Use SSL?</th>
@@ -35,12 +35,12 @@ require_once(__DIR__ . '/smtp-configuration.php'); ?>
                     <tr>
                         <th scope="row">Username</th>
                         <td>
-                            <input type="text" name="smtp_username" id="smtp_username" class="regular-text" value="<?php echo esc_attr(get_option('smtp-configuration-smtp-username')); ?>" />
+                            <input type="text" name="smtp_username" id="smtp_username" class="regular-text" value="<?php echo esc_attr(get_option('smtp-configuration-smtp-username', DEFAUT_SMTP_USER)); ?>" />
                         </td>
                     </tr>
                     <tr>
                         <th scope="row">Password</th>
-                        <td><input type="password" name="smtp_password" id="smtp_password" value="<?php echo esc_attr(get_option('smtp-configuration-smtp-password')); ?>" /></td>
+                        <td><input type="password" name="smtp_password" id="smtp_password" value="<?php echo esc_attr(get_option('smtp-configuration-smtp-password', DEFAUT_SMTP_PASS)); ?>" /></td>
                     </tr>
                    
                 </tbody>

@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: SMTP Configuration
- * Description: Allows send authicated emails through SMTP connection
+ * Description: Allows send authenticated emails through SMTP connection
  * Version: 1.0
  * Author: Pedro Fernandes
  * Author URI: http://impedro.com
@@ -9,6 +9,7 @@
 */
 
 defined('ABSPATH') or die('No script kiddies please!');
+require_once(__DIR__ . '/default_settings.php'); 
 
 /**
  * Init phpmailer with saved configurations and support 
@@ -17,17 +18,28 @@ defined('ABSPATH') or die('No script kiddies please!');
  * @return void
  */
 function impedro_smtpconfiguration_phpmailer_init($phpmailer) {
-    $phpmailer->Host = get_option('smtp-configuration-smtp-host');
-    $phpmailer->Port = get_option('smtp-configuration-smtp-port');
-    $phpmailer->Username = get_option('smtp-configuration-smtp-username');
-    $phpmailer->Password = get_option('smtp-configuration-smtp-password');;
+    $phpmailer->Host = get_option('smtp-configuration-smtp-host', DEFAUT_SMTP_HOST);
+    $phpmailer->Port = get_option('smtp-configuration-smtp-port', DEFAUT_SMTP_PORT);
+    $phpmailer->Username = get_option('smtp-configuration-smtp-username', DEFAUT_SMTP_USER);
+    $phpmailer->Password = get_option('smtp-configuration-smtp-password', DEFAUT_SMTP_PASS);
 
-    if (get_option('smtp-configuration-smtp-auth') == true) {
-        $phpmailer->SMTPAuth = get_option('smtp-configuration-smtp-auth');
+    if (get_option('smtp-configuration-smtp-auth', impedro_smtpconfiguration_is_authenticated()) == true) {
+        $phpmailer->SMTPAuth = get_option('smtp-configuration-smtp-auth', impedro_smtpconfiguration_is_authenticated());
     }
 
-    if (get_option('smtp-configuration-smtp-auth' == true)) {
-        $phpmailer->SMTPSecure = 'ssl';
+    if (get_option('smtp-configuration-smtp-secure', DEFAUT_SMTP_SECURE) == true) {
+        switch ($phpmailer->Port) {
+            case 465:
+                $phpmailer->SMTPSecure = 'ssl';
+                break;
+
+            case 587:
+                $phpmailer->SMTPSecure = 'tls';
+                break;                
+            
+            default:
+                break;
+        }
     }
 
     $phpmailer->IsSMTP();
@@ -105,16 +117,23 @@ function impedro_smtpconfiguration_process_form_input() {
     update_option('smtp-configuration-smtp-secure', $smtp_secure);
 }
 
+function impedro_smtpconfiguration_maybe_smtp_secure_checked() {
+    if (get_option('smtp-configuration-smtp-secure', DEFAUT_SMTP_SECURE) == true) echo 'checked="checked"';
+}
 
 function impedro_smtpconfiguration_maybe_smtp_auth_checked() {
     if (get_option('smtp-configuration-smtp-auth') == true) echo 'checked="checked"';
 }
 
-function impedro_smtpconfiguration_maybe_smtp_secure_checked() {
-    if (get_option('smtp-configuration-smtp-secure') == true) echo 'checked="checked"';
+function impedro_smtpconfiguration_maybe_hide_smtp_auth_parameters() {
+    if (get_option('smtp-configuration-smtp-auth', impedro_smtpconfiguration_is_authenticated()) == true) echo 'block';
+    else echo 'none';
 }
 
-function impedro_smtpconfiguration_maybe_hide_smtp_auth_parameters() {
-    if (get_option('smtp-configuration-smtp-auth') == true) echo 'block';
-    else echo 'none';
+function impedro_smtpconfiguration_is_authenticated() {
+    if (DEFAUT_SMTP_USER === '' || DEFAUT_SMTP_PASS === '') {
+        return false;
+    } 
+
+    return true;
 }
