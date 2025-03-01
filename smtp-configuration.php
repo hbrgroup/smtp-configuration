@@ -48,6 +48,30 @@ function impedro_smtpconfiguration_phpmailer_init($phpmailer) {
 add_action('phpmailer_init', 'impedro_smtpconfiguration_phpmailer_init');
 
 /**
+ * Set the from email address for the wp_mail function
+ * 
+ * @return string
+ */
+add_filter('wp_mail_from', function($from) {
+    return get_bloginfo('admin_email');
+});
+
+/**
+ * Set the from name for the wp_mail function
+ * 
+ * @return string
+ */
+add_filter('wp_mail_from_name', function($from_name) {
+    return get_bloginfo('name');
+});
+
+function impedro_smtpconfiguration_wp_mail_failed($error) {
+    $_SESSION['wp_mail_error'] = $error;
+}
+
+add_action('wp_mail_failed', 'impedro_smtpconfiguration_wp_mail_failed');
+
+/**
  * Create admin smtp configuration menu in options panel
  * 
  * @return void
@@ -65,7 +89,9 @@ add_action('admin_menu', 'impedro_smtpconfiguration_create_settings_menu');
  */
 function impedro_smtpconfiguration_create_settings_page() {
     if (!empty($_POST)) {
-        impedro_smtpconfiguration_process_form_input();
+        if (isset($_POST['submit'])) {
+            impedro_smtpconfiguration_process_form_input();
+        }
     } 
     
     impedro_smtpconfiguration_generate_settings_form();
@@ -83,14 +109,52 @@ function impedro_smtpconfiguration_enqueue_scripts() {
 add_action('admin_enqueue_scripts', 'impedro_smtpconfiguration_enqueue_scripts');
 
 /**
+ * Show admin notice when settings are saved
+ * 
+ * @return void
+ */
+function impedro_smtpconfiguration_admin_notice() {
+    if (isset($_POST['submit'])) {
+        echo '<div class="notice notice-success is-dismissible">
+            <p>Settings saved successfully.</p>
+        </div>'; 
+    } else if (isset($_POST['sendTest'])) {
+        
+        $sent = wp_mail(get_bloginfo('admin_email'), 'Test email', 'This is a test email sent from your WordPress site.');
+
+        if ($sent == TRUE) {
+            echo '<div class="notice notice-success is-dismissible">
+                <p>Test email sent successfully.</p>
+            </div>'; 
+        } else {
+            echo '<div class="notice notice-error is-dismissible">            
+                <p>Failed to send test email., Please check your SMTP settings.</p>
+            ';
+
+            echo '  <ul>';
+
+            foreach ($_SESSION['wp_mail_error']->errors['wp_mail_failed'] as $error) {
+                echo '<li> - ' . $error . '</li>';
+            }
+
+            echo '  <ul>';
+            echo '</div>';
+        }
+        
+    }
+}
+
+add_action('admin_notices', 'impedro_smtpconfiguration_admin_notice');
+
+/**
  * Create and show admin page in options menu
  * 
  * @return void
  */
 function impedro_smtpconfiguration_generate_settings_form() {
 ?>
-    <style><?php include ('css/page.css'); ?></style>
-    <?php include ('entry-form.php'); ?>           
+    <style><?php include('css/page.css'); ?></style>
+    <?php include('entry-form.php'); ?>           
   <?php
 }
 
@@ -130,7 +194,7 @@ function impedro_smtpconfiguration_maybe_hide_smtp_auth_parameters() {
     else echo 'none';
 }
 
-function impedro_smtpconfiguration_is_authenticated() {
+function impedro_smtpconfiguration_is_authenticated(): bool {
     if (DEFAUT_SMTP_USER === '' || DEFAUT_SMTP_PASS === '') {
         return false;
     } 
