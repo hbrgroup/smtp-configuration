@@ -1,0 +1,113 @@
+# Copyright (C) 2025 Pedro Fernandes
+# This file is distributed under the same license as the SMTP Configuration plugin.
+
+#. Plugin Name of the plugin
+#: entry-form.php:63
+msgid "SMTP Configuration"
+msgstr "Configurações SMTP"
+
+#. Description of the plugin
+msgid "Allows send authenticated emails through SMTP connection"
+msgstr "Permite o envio de emails autenticados através de uma conexão SMTP"
+
+#: entry-form.php:6
+#: smtp-configuration.php:82
+msgid "SMTP Settings"
+msgstr "Opções do SMTP"
+
+#: entry-form.php:7
+msgid "Configure your SMTP settings here. If you are unsure about the settings, please contact your hosting provider."
+msgstr "Configure as suas opções de SMTP aqui. Se não tiver a certeza sobre estas configurações, contacte o seu fornecedor de alojamento."
+
+#: entry-form.php:11
+msgid "Settings & Authentication"
+msgstr "Opções e autenticação"
+
+#: entry-form.php:16
+#: entry-form.php:19
+#: entry-form.php:66
+#: entry-form.php:75
+#: entry-form.php:84
+msgid "Host Name"
+msgstr "Dominio"
+
+#: entry-form.php:23
+#: entry-form.php:67
+#: entry-form.php:76
+#: entry-form.php:85
+msgid "Port"
+msgstr "Porta"
+
+#: entry-form.php:27
+#: entry-form.php:68
+#: entry-form.php:77
+#: entry-form.php:86
+msgid "Use SSL"
+msgstr "Usar SSL"
+
+#: entry-form.php:31
+#: entry-form.php:69
+#: entry-form.php:78
+msgid "Use SMTP Authentication"
+msgstr "Usar autenticação SMTP"
+
+#: entry-form.php:41
+#: entry-form.php:70
+#: entry-form.php:79
+#: entry-form.php:88
+msgid "Username"
+msgstr "Utilizador"
+
+#: entry-form.php:47
+#: entry-form.php:71
+#: entry-form.php:80
+#: entry-form.php:89
+msgid "Password"
+msgstr "Palavra-chave"
+
+#: entry-form.php:56
+msgid "Update Settings"
+msgstr "Actualizar"
+
+#: entry-form.php:57
+msgid "Send test email to"
+msgstr "Enviar um teste para"
+
+#: entry-form.php:68
+#: entry-form.php:69
+#: entry-form.php:78
+#: entry-form.php:86
+msgid "Yes"
+msgstr "Sim"
+
+#: entry-form.php:91
+msgid "For other email providers, please contact your hosting provider."
+msgstr "Para outros servidores de email contacte o seu fornecedor do alojamento."
+
+#: entry-form.php:92
+msgid "Please note that this plugin doesn't support sending emails from your local server. It sends emails using your hosting provider's SMTP settings."
+msgstr "Tenha em atenção que este plugin nao suporta o envio de emails por um servidor local. Use sempre as configurações fornecidas pelo seu fornecedor de alojamento."
+
+#: smtp-configuration.php:121
+msgid "Settings saved successfully."
+msgstr "Opções salvas com sucesso."
+
+#: smtp-configuration.php:129
+msgid "Test email sent successfully."
+msgstr "Email enviado com sucesso."
+
+#: smtp-configuration.php:133
+msgid "Failed to send test email. Please check your SMTP settings."
+msgstr "Falhou o envio de email. Verifique as configurações do SMTP."
+
+msgid "Failed to send test email. Please check your SMTP settings."
+msgstr "Falhou o envio de email. Verifique as configurações do SMTP."
+
+msgid "Your %s email address"
+msgstr "O seu endereço do %s"
+
+msgid "Your %s app password"
+msgstr "A palavra-chave aplicacional do %s"
+
+msgid "Your %s password"
+msgstr "A sua palavra-chave do %s"

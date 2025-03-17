@@ -2,14 +2,23 @@
 /*
  * Plugin Name: SMTP Configuration
  * Description: Allows send authenticated emails through SMTP connection
- * Version: 1.0
+ * Version: 2.0.1
  * Author: Pedro Fernandes
  * Author URI: http://impedro.com
  * Plugin URI: http://impedro.com
+ * Text Domain: smtp-configuration
+ * Domain Path: /languages
 */
 
 defined('ABSPATH') or die('No script kiddies please!');
 require_once(__DIR__ . '/default_settings.php'); 
+
+
+function impedro_load_textdomain() {
+	load_plugin_textdomain('smtp-configuration', false, dirname(plugin_basename(__FILE__)) . '/languages'); 
+}
+
+add_action('init', 'impedro_load_textdomain');
 
 /**
  * Init phpmailer with saved configurations and support 
@@ -77,7 +86,7 @@ add_action('wp_mail_failed', 'impedro_smtpconfiguration_wp_mail_failed');
  * @return void
  */
 function impedro_smtpconfiguration_create_settings_menu() {
-    add_options_page('SMTP Settings', 'SMTP Settings', 'manage_options', 'smtp-configuration', 'impedro_smtpconfiguration_create_settings_page');
+    add_options_page(__('SMTP Settings', 'smtp-configuration'), __('SMTP Settings', 'smtp-configuration'), 'manage_options', 'smtp-configuration', 'impedro_smtpconfiguration_create_settings_page');
 }
 
 add_action('admin_menu', 'impedro_smtpconfiguration_create_settings_menu');
@@ -116,7 +125,7 @@ add_action('admin_enqueue_scripts', 'impedro_smtpconfiguration_enqueue_scripts')
 function impedro_smtpconfiguration_admin_notice() {
     if (isset($_POST['submit'])) {
         echo '<div class="notice notice-success is-dismissible">
-            <p>Settings saved successfully.</p>
+            <p>' . __('Settings saved successfully.', 'smtp-configuration') . ' </p>
         </div>'; 
     } else if (isset($_POST['sendTest'])) {
         
@@ -124,11 +133,11 @@ function impedro_smtpconfiguration_admin_notice() {
 
         if ($sent == TRUE) {
             echo '<div class="notice notice-success is-dismissible">
-                <p>Test email sent successfully.</p>
+                <p>' . __('Test email sent successfully.', 'smtp-configuration') . '</p>
             </div>'; 
         } else {
             echo '<div class="notice notice-error is-dismissible">            
-                <p>Failed to send test email., Please check your SMTP settings.</p>
+                <p>' . __('Failed to send test email. Please check your SMTP settings.', 'smtp-configuration') . '</p>
             ';
 
             echo '  <ul>';
